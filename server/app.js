@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({
 const mongoose = require('mongoose');
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/mongo-test', {
+mongoose.connect('mongodb://mongo:27017/serverdb', {
   useNewUrlParser: true
 });
 
