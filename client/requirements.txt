@@ -1,2 +1,5 @@
 flask
+waitress
+apscheduler
+requests
 Instrumental-lib
