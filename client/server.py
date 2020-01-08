@@ -1,6 +1,7 @@
 from flask import Flask
 from subprocess import Popen
 import os
+from datetime import datetime
 
 from waitress import serve
 
@@ -12,13 +13,20 @@ app = Flask(__name__)
 
 servers = []
 
+request_list = []
+
 @app.route('/')
 def hello():
-    return "Welcome to the subserver API for instrumental-api."
+    string = "Welcome to the subserver API for instrumental-api.<br>"
+    string += "<br><h3>Request History</h3><br>"
+    for line in request_list:
+        string += line + "<br>"
+    return string
 
 @app.route('/start')
 def run_server():
     try:
+        request_list.append("%s START" % datetime.now())
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'instr_server.py')
         s = Popen(['python', path])
         servers.append(s)
@@ -29,6 +37,7 @@ def run_server():
 
 @app.route('/stop')
 def shutdown():
+    request_list.append("%s STOP" % datetime.now())
     for s in servers:
         s.kill()
         servers.remove(s)
@@ -45,6 +54,7 @@ def call_home():
 
 
     IP = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+    PORT = 8000
     ID = None
 
     # Get a list of all machines known to the server
@@ -59,13 +69,13 @@ def call_home():
             print("Matching id found")
 
     if ID is not None:
-        data = json.dumps({"name": NAME, "description": DESCRIPTION, "ip": IP})
+        data = json.dumps({"name": NAME, "description": DESCRIPTION, "ip": IP, "port": PORT})
         headers = {'content-type': 'application/json'}
         r = requests.put(url + str(ID), data, headers=headers)
         print(r, r.content)
         
     else:
-        data = json.dumps({"ee_tag": EE_TAG, "name": NAME, "description": DESCRIPTION, "ip": IP})
+        data = json.dumps({"ee_tag": EE_TAG, "name": NAME, "description": DESCRIPTION, "ip": IP, "port": PORT})
         headers = {'content-type': 'application/json'}
         r = requests.post(url, data, headers=headers)
         print(r, r.content)
