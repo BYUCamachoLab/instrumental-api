@@ -17,6 +17,7 @@ request_list = []
 
 @app.route('/')
 def hello():
+    request_list.insert(0, "%s INDEX" % datetime.now())
     string = "Welcome to the subserver API for instrumental-api.<br>"
     string += "<br><h3>Request History</h3><br>"
     for line in request_list:
@@ -26,7 +27,7 @@ def hello():
 @app.route('/start')
 def run_server():
     try:
-        request_list.append("%s START" % datetime.now())
+        request_list.insert(0, "%s START" % datetime.now())
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'instr_server.py')
         s = Popen(['python', path])
         servers.append(s)
@@ -37,7 +38,7 @@ def run_server():
 
 @app.route('/stop')
 def shutdown():
-    request_list.append("%s STOP" % datetime.now())
+    request_list.insert(0, "%s STOP" % datetime.now())
     for s in servers:
         s.kill()
         servers.remove(s)
@@ -58,7 +59,7 @@ def call_home():
     ID = None
 
     # Get a list of all machines known to the server
-    url = 'http://localhost:8080/api/subservers/'
+    url = 'http://10.2.118.119:8080/api/subservers/'
     r = requests.get(url)
     known_machines = json.loads(r.content, object_hook=lambda d: namedtuple('machine', d.keys(), rename=True)(*d.values()))
 
