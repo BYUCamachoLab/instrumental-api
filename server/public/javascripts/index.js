@@ -4,12 +4,10 @@ var app = new Vue({
         machines: [],
     },
     created() {
-        console.log("Index created!")
         this.getMachines();
     },
     methods: {
         async getMachines() {
-            console.log("index.js getMachines()")
             try {
                 let response = await axios.get("/api/subservers");
                 this.machines = response.data;
@@ -38,7 +36,6 @@ var app = new Vue({
             }
         },
         async startMachine(machine) {
-            console.log("index.js startMachine() for id " + machine.id);
             try {
                 let response = await axios.get("/api/subservers/start/" + machine.id);
                 console.log(response.data);
@@ -49,7 +46,6 @@ var app = new Vue({
             }
         },
         async stopMachine(machine) {
-            console.log("index.js stopMachine() for id " + machine.id);
             try {
                 let response = await axios.get("/api/subservers/stop/" + machine.id);
                 console.log(response.data);
