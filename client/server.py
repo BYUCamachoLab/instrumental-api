@@ -7,12 +7,14 @@ from waitress import serve
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-### FLASK APP ###
+import requests, json, socket
+from collections import namedtuple
+import config as c
 
+### FLASK APP ###
 app = Flask(__name__)
 
 servers = []
-
 request_list = []
 
 @app.route('/')
@@ -45,21 +47,16 @@ def shutdown():
     return('Server stopped.')
 
 ### CALL HOME ###
-
-import requests, json, socket
-from collections import namedtuple
 def call_home():
-    EE_TAG = 'EE1574'
-    NAME = 'Sequoias Computer'
-    DESCRIPTION = 'Lab computer not hooked up to any instruments'
-
-
+    EE_TAG = c.EE_TAG
+    NAME = c.NAME
+    DESCRIPTION = c.DESCRIPTION
     IP = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-    PORT = 8000
+    PORT = c.PORT
     ID = None
 
     # Get a list of all machines known to the server
-    url = 'http://10.2.118.119:8080/api/subservers/'
+    url = c.URL
     r = requests.get(url)
     known_machines = json.loads(r.content, object_hook=lambda d: namedtuple('machine', d.keys(), rename=True)(*d.values()))
 
@@ -85,10 +82,10 @@ def call_home():
 if __name__ == '__main__':
     call_home()
     scheduler = BackgroundScheduler()
-    scheduler.add_job(call_home, 'interval', minutes=1)
+    scheduler.add_job(call_home, 'interval', minutes=10)
     scheduler.start()
     try:
-        serve(app, host='0.0.0.0', port=8000, threads=4)
+        serve(app, host='0.0.0.0', port=c.PORT, threads=4)
     except:
         scheduler.shutdown()
     
