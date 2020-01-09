@@ -42,6 +42,7 @@ const subserverSchema = new mongoose.Schema({
   name: String,
   description: String,
   ip: String,
+  port: String,
   status : {type: Boolean, default: false},
   updated: {type: Date, default: Date.now},
 });
@@ -75,6 +76,7 @@ app.post('/api/subservers', async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       ip: req.body.ip,
+      port: req.body.port,
     });
   try {
     await subserver.save();
@@ -108,6 +110,7 @@ app.put('/api/subservers/:id', async(req, res) => {
     subserver.name = req.body.name
     subserver.description = req.body.description
     subserver.ip = req.body.ip
+    subserver.port = req.body.port
     subserver.updated = Date.now()
     await subserver.save();
     res.send(200);
@@ -124,7 +127,7 @@ app.get('/api/subservers/start/:id', async(req, res) => {
     let subserver = await Subserver.findOne({
       _id: req.params.id
     });
-    let url = "http://" + subserver.ip + "/start";
+    let url = "http://" + subserver.ip + ":" + subserver.port + "/start";
     console.log(url);
     let response = await axios.get(url);
     console.log(response.data);
@@ -144,7 +147,7 @@ app.get('/api/subservers/stop/:id', async(req, res) => {
     let subserver = await Subserver.findOne({
       _id: req.params.id
     });
-    let url = "http://" + subserver.ip + "/stop";
+    let url = "http://" + subserver.ip + ":" + subserver.port + "/stop";
     console.log(url);
     let response = await axios.get(url);
     console.log(response.data);
