@@ -29,7 +29,9 @@
     </div>
     <div id="app" class="content">
         <p>This dashboard serves as the main control hub for all subservers connected to instruments.</p>
-        <p>Each subserver "calls home" every 10 minutes, as shown by its "Last Updated" time. If a subserver has exceeded more than 10 minutes, chances are it has become disconnected and needs to be reconfigured. Be aware that if a machine that is no longer in contact with the server is started, it will fail silently.</p>
+        <p>Each subserver "calls home" every 10 minutes, as shown by its "Last Updated" time. If a subserver has
+            exceeded more than 10 minutes, chances are it has become disconnected and needs to be reconfigured. Be aware
+            that if you start a machine that is no longer in contact with the server, it will fail silently.</p>
         <p>NOTE: Servers should be left in the "Stopped" condition, and only started when ready to use.</p>
         <p>Once a server has been started, remote connections can be made using the listed IP address.</p>
         <table id="remotes">
@@ -68,8 +70,9 @@
         &copy; 2020 Sequoia Ploeg
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js"
-        integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js"
+        integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
         integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
