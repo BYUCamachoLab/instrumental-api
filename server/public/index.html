@@ -28,6 +28,10 @@
         </div>
     </div>
     <div id="app" class="content">
+        <p>This dashboard serves as the main control hub for all subservers connected to instruments.</p>
+        <p>Each subserver "calls home" every 10 minutes, as shown by its "Last Updated" time. If a subserver has exceeded more than 10 minutes, chances are it has become disconnected and needs to be reconfigured. Be aware that if a machine that is no longer in contact with the server is started, it will fail silently.</p>
+        <p>NOTE: Servers should be left in the "Stopped" condition, and only started when ready to use.</p>
+        <p>Once a server has been started, remote connections can be made using the listed IP address.</p>
         <table id="remotes">
             <tr>
                 <th>EE Tag #</th>
@@ -37,18 +41,6 @@
                 <th>Status</th>
                 <th>Action</th>
                 <th>Last Updated</th>
-            </tr>
-            <tr>
-                <td>EE1476</td>
-                <td>Laser Machine</td>
-                <td>This machine is connected to the laser as well as a host of other equipment. This sentence is getting to the point that I hope it gets wrapped. Although, we should consider the possibility that it never gets wrapped, in which case: what happens?</td>
-                <td>0.0.0.0</td>
-                <td>Running</td>
-                <td>
-                    <!-- <button type="button" class="btn btn-success">Start</button> -->
-                    <button type="button" class="btn btn-danger">Stop</button>
-                </td>
-                <td>4 minutes ago</td>
             </tr>
             <tr v-for="machine in machines">
                 <td>{{ machine.ee_tag }}</td>
@@ -67,7 +59,7 @@
                         <button v-on:click="stopMachine(machine)" type="button" class="btn btn-danger">Stop</button>
                     </div>
                 </td>
-                <td>{{ machine.updated }}</td>
+                <td>{{ machine.time_since }}</td>
             </tr>
         </table>
     </div>
@@ -76,10 +68,11 @@
         &copy; 2020 Sequoia Ploeg
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
-        integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js"
         integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
+        integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="javascripts/index.js"></script>
 </body>
 
