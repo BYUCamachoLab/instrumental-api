@@ -57,7 +57,7 @@ def call_home():
 
     # Get a list of all machines known to the server
     url = c.URL
-    r = requests.get(url)
+    r = requests.get(url, verify=False)
     known_machines = json.loads(r.content, object_hook=lambda d: namedtuple('machine', d.keys(), rename=True)(*d.values()))
 
     # Match our computer to the list of known machines
@@ -69,13 +69,13 @@ def call_home():
     if ID is not None:
         data = json.dumps({"name": NAME, "description": DESCRIPTION, "ip": IP, "port": PORT})
         headers = {'content-type': 'application/json'}
-        r = requests.put(url + str(ID), data, headers=headers)
+        r = requests.put(url + str(ID), data, headers=headers, verify=False)
         print(r, r.content)
         
     else:
         data = json.dumps({"ee_tag": EE_TAG, "name": NAME, "description": DESCRIPTION, "ip": IP, "port": PORT})
         headers = {'content-type': 'application/json'}
-        r = requests.post(url, data, headers=headers)
+        r = requests.post(url, data, headers=headers, verify=False)
         print(r, r.content)
 
 
