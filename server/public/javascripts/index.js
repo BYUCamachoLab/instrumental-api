@@ -9,7 +9,7 @@ var app = new Vue({
     methods: {
         async getMachines() {
             try {
-                let response = await axios.get("/api/subservers");
+                let response = await axios.get("/instrumental/api/subservers");
                 this.machines = response.data;
                 for (let i = 0; i < this.machines.length; i++) {
                     let then = moment(this.machines[i].updated);
@@ -37,7 +37,7 @@ var app = new Vue({
         },
         async startMachine(machine) {
             try {
-                let response = await axios.get("/api/subservers/start/" + machine.id);
+                let response = await axios.get("/instrumental/api/subservers/start/" + machine.id);
                 console.log(response.data);
                 this.getMachines()
                 return true;
@@ -47,7 +47,7 @@ var app = new Vue({
         },
         async stopMachine(machine) {
             try {
-                let response = await axios.get("/api/subservers/stop/" + machine.id);
+                let response = await axios.get("/instrumental/api/subservers/stop/" + machine.id);
                 console.log(response.data);
                 this.getMachines()
                 return true;
